@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+  <TextView
+      android:id="@+id/var1"
+      android:layout_width="wrap_content"
+      android:layout_height="40dp"
+      android:layout_marginLeft="20dp"
+      android:text="@string/showtype"
+      android:gravity="center|left"
+      />
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:entries="@array/showtypearray"
+        android:layout_below="@+id/var1"
+        android:layout_alignLeft="@+id/var1"
+        ></Spinner>
+    <TextView
+        android:id="@+id/var2"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:text="@string/datetype"
+        android:gravity="center|left"
+        android:layout_alignTop="@+id/var1"
+        android:layout_toRightOf="@+id/spinner1"
+        />
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:entries="@array/datatypearray"
+        android:layout_below="@+id/var2"
+        android:layout_alignLeft="@+id/var2"
+        ></Spinner>
+<com.github.mikephil.charting.charts.LineChart
+    android:id="@+id/linechart"
+    android:layout_width="fill_parent"
+    android:layout_height="300dp"
+    android:layout_marginTop="10dp"
+    android:layout_below="@+id/spinner1"
+    >
+</com.github.mikephil.charting.charts.LineChart>
+</RelativeLayout>

@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">DataShow</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="show">显示</string>
+    <string name="alarm">报警历史</string>
+    <string name="setting">设置</string>
+    <string name="bluetooth">蓝牙设置</string>
+    <string name="datastore">数据存储</string>
+    <string name="showtype">数据类型</string>
+    <string name="datetype">日期类型</string>
+    <string-array name="showtypearray">
+        <item>显示温度</item>
+        <item>显示湿度</item>
+    </string-array>
+    <string-array name="datatypearray">
+        <item>2016-4-1</item>
+        <item>2016-4-2</item>
+        <item>2016-4-3</item>
+        <item>2016-4-4</item>
+        <item>2016-4-5</item>
+        <item>2016-4-6</item>
+        <item>2016-4-7</item>
+        <item>2016-4-8</item>
+        <item>2016-4-9</item>
+        <item>2016-4-10</item>
+
+    </string-array>
+</resources>
