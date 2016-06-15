@@ -4,7 +4,7 @@ package com.novas.model;
  * Created by novas on 16/4/21.
  */
 public class Element {
-    public double time;
+    public long time;
     //温度
     public double tmpr;
     //湿度

@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.novas.activity.bluetoothActivity;
+import com.novas.activity.SearchDeviceActivity;
 import com.novas.activity.datastoreActivity;
 import com.novas.controller.HomeController;
 import com.novas.datashow.R;
@@ -36,7 +36,7 @@ public class settingfragment extends Fragment
         bluetoothlinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(context,bluetoothActivity.class);
+                Intent intent=new Intent(context,SearchDeviceActivity.class);
                 startActivity(intent);
             }
         });

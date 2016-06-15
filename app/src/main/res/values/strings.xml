@@ -10,6 +10,11 @@
     <string name="datastore">数据存储</string>
     <string name="showtype">数据类型</string>
     <string name="datetype">日期类型</string>
+    <string name="real">显示类型</string>
+    <string-array name="realtypearray">
+        <item>实时显示</item>
+        <item>历史显示</item>
+    </string-array>
     <string-array name="showtypearray">
         <item>显示温度</item>
         <item>显示湿度</item>

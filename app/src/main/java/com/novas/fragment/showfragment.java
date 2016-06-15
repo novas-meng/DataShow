@@ -2,7 +2,7 @@ package com.novas.fragment;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Bundle;
+import android.os.*;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -55,16 +55,52 @@ public class showfragment extends Fragment
     String date;
     Spinner datespinner;
     Spinner typespinner;
+    Spinner realspinner;
+    Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+           // super.handleMessage(msg);
+            dataModel.onChange();
+        }
+    };
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeController=HomeController.getHomeControllerInstance(null);
         context=homeController.getContext();
+        dataModel=DataModel.getInstance();
+        dataModel.register(this);
         View view=inflater.inflate(R.layout.fragment_show,container,false);
 
         typespinner=(Spinner)view.findViewById(R.id.spinner1);
         datespinner=(Spinner)view.findViewById(R.id.spinner2);
+        realspinner=(Spinner)view.findViewById(R.id.spinner3);
+        realspinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                System.out.println("及时显示");
+                //dataModel.onChange();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // dataModel.onChange();
+                        for (int i = 0; i < 10; i++) {
+                            handler.obtainMessage().sendToTarget();
+                            try {
+                                Thread.sleep(10000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }).start();
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         typespinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -90,11 +126,16 @@ public class showfragment extends Fragment
             }
         });
         mLineChart = (LineChart) view.findViewById(R.id.linechart);
-        dataModel=DataModel.getInstance();
         LineChartModel model=dataModel.getLineChartModel("2016-4-1",1);
        // LineData mLineData = getLineData(24, 5);
         LineData lineData=getLineData(model);
         showChart(mLineChart, lineData, Color.rgb(114, 188, 223));
+     //   new Thread(new Runnable() {
+      //      @Override
+      //      public void run() {
+      //          dataModel.onChange();
+        //    }
+      //  }).start();
         return view;
     }
     // 设置显示的样式
@@ -174,9 +215,20 @@ public class showfragment extends Fragment
         l.add(lineDataSet);
         // create a data object with the datasets
         LineData lineData = new LineData(model.getxValues(),l);
-
-
         return lineData;
+    }
+    public void realTimeRefresh()
+    {
+        type=typespinner.getSelectedItemPosition()+1;
+        System.out.println("type="+type+" "+date);
+        LineChartModel model=dataModel.getRealtimeLineChartModel(type);
+        LineData lineData=getLineData(model);
+        showChart(mLineChart, lineData, Color.rgb(114, 188, 223));
+    }
+    //当温度或者湿度超过阈值的时候，进行报警
+    public void alarm()
+    {
+        homeController.alarm();
     }
     public void refresh()
     {

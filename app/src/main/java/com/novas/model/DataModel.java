@@ -1,16 +1,21 @@
 package com.novas.model;
 
+import android.app.Fragment;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.github.mikephil.charting.data.Entry;
+import com.novas.fragment.showfragment;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.EventListener;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Random;
 
@@ -20,7 +25,36 @@ import java.util.Random;
 public class DataModel {
     private static DataModel dataModel=null;
     public HashMap<String, ArrayList<Element>> showdataMap=new HashMap<>();
+    //用于事实测量的时候进行显示
+    public LinkedList<Element> realtimelist=new LinkedList<>();
     Random random=new Random();
+    //用来通知界面更新
+    showfragment fragment;
+    public void register(showfragment fragment)
+    {
+        this.fragment=fragment;
+    }
+    //数据改变的时候，调用
+    public void onChange()
+    {
+        Random random=new Random();
+        for(int i=0;i<1;i++)
+        {
+            Element element=new Element();
+            element.moisture=random.nextDouble();
+            element.tmpr=random.nextDouble();
+            Calendar calendar=Calendar.getInstance();
+            Date date=calendar.getTime();
+            element.time=date.getTime();
+            realtimelist.add(element);
+            if(realtimelist.size()==2)
+            {
+                fragment.alarm();
+            }
+        }
+        fragment.realTimeRefresh();
+    }
+
     public static DataModel getInstance()
     {
         if(dataModel==null)
@@ -31,9 +65,47 @@ public class DataModel {
     }
     private DataModel()
     {
-
+        try {
+            System.out.println("初始化");
+        //    init();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
+    //生成及时测量的图表，从realtimemeasureMap中获取数据
+    // LineChartModel,type=1表示只显示温度，type＝2表示只显示湿度，type＝3表示显示温度和湿度
+    public LineChartModel getRealtimeLineChartModel(int type)
+    {
+        ArrayList<Entry> entryArrayList=new ArrayList<>();
+        for(int i=realtimelist.size()-1;i>=0;i--)
+        {
+            if(realtimelist.size()-1-i==10)
+            {
+                break;
+            }
+            Element element=realtimelist.get(i);
+            Entry entry=null;
+            if(type==1)
+            {
+                entry=new Entry((float)element.tmpr,i);
+            }
+            if(type==2)
+            {
+                entry=new Entry((float)element.moisture,i);
+            }
+            entryArrayList.add(entry);
+        }
+        ArrayList<String> xvalues=new ArrayList<>();
+        for(int i=0;i<entryArrayList.size();i++)
+        {
+            xvalues.add(i+"");
+        }
+        LineChartModel lineChartModel=new LineChartModel();
+        lineChartModel.yValues=entryArrayList;
+        lineChartModel.xValues=xvalues;
+        return lineChartModel;
+    }
     //生成LineChartModel,type=1表示只显示温度，type＝2表示只显示湿度，type＝3表示显示温度和湿度
     public LineChartModel getLineChartModel(String date,int type)
     {
@@ -79,7 +151,7 @@ public class DataModel {
                 double tmpr=cursor.getDouble(2);
                 double moisture=cursor.getDouble(3);
                 Element element=new Element();
-                element.time=time;
+                element.time=(long)time;
                 element.tmpr=tmpr;
                 element.moisture=moisture;
                 if(showdataMap.containsKey(date))

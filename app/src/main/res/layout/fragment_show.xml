@@ -35,6 +35,24 @@
         android:layout_below="@+id/var2"
         android:layout_alignLeft="@+id/var2"
         ></Spinner>
+    <TextView
+        android:id="@+id/var3"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginLeft="20dp"
+        android:text="@string/real"
+        android:gravity="center|left"
+        android:layout_alignTop="@+id/var2"
+        android:layout_toRightOf="@+id/spinner2"
+        />
+    <Spinner
+        android:id="@+id/spinner3"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:entries="@array/realtypearray"
+        android:layout_below="@+id/var3"
+        android:layout_alignLeft="@+id/var3"
+        ></Spinner>
 <com.github.mikephil.charting.charts.LineChart
     android:id="@+id/linechart"
     android:layout_width="fill_parent"

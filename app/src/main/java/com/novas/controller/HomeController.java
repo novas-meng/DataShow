@@ -1,6 +1,8 @@
 package com.novas.controller;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -50,6 +52,26 @@ public class HomeController implements control
     public Context getContext()
     {
         return context;
+    }
+    //发出报警声
+    public void alarm()
+    {
+        NotificationManager nm=(NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification notify2 = new Notification.Builder(context)
+                .setSmallIcon(R.drawable.bluetooth) // 设置状态栏中的小图片，尺寸一般建议在24×24，这个图片同样也是在下拉状态栏中所显示，如果在那里需要更换更大的图片，可以使用setLargeIcon(Bitmap
+                        // icon)
+                .setTicker("TickerText:" + "您有新短消息，请注意查收！")// 设置在status
+                        // bar上显示的提示文字
+                .setContentTitle("Notification Title")// 设置在下拉status
+                        // bar后Activity，本例子中的NotififyMessage的TextView中显示的标题
+                .setContentText("This is the notification message")// TextView中显示的详细内容
+                .setNumber(1) // 在TextView的右方显示的数字，可放大图片看，在最右侧。这个number同时也起到一个序列号的左右，如果多个触发多个通知（同一ID），可以指定显示哪一个。
+                .getNotification(); // 需要注意build()是在API level
+        // 16及之后增加的，在API11中可以使用getNotificatin()来代替
+        notify2.flags |= Notification.FLAG_AUTO_CANCEL;
+        notify2.defaults = Notification.DEFAULT_ALL;
+        nm.notify(1, notify2);
+
     }
     public static HomeController getHomeControllerInstance(Activity context)
     {
